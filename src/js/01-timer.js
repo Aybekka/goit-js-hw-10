@@ -57,23 +57,33 @@ startBtn.addEventListener('click', () => {
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
-
+let previousTime = { days: 0, hours: 0, minutes: 0, seconds: 0 };
 function updateTimerUI(d, h, m, s) {
+ 
+  handleAnimation(timerFields.days, d, previousTime.days);
+  handleAnimation(timerFields.hours, h, previousTime.hours);
+  handleAnimation(timerFields.minutes, m, previousTime.minutes);
+  handleAnimation(timerFields.seconds, s, previousTime.seconds);
+
   timerFields.days.textContent = addLeadingZero(d);
   timerFields.hours.textContent = addLeadingZero(h);
   timerFields.minutes.textContent = addLeadingZero(m);
   timerFields.seconds.textContent = addLeadingZero(s);
 
-  //deneme amaçlı küçük bir animasyon!!!!
-  timerFields.seconds.style.transform = 'scale(1.1)';
-  setTimeout(() => timerFields.seconds.style.transform = 'scale(1)', 100);
-  timerFields.minutes.style.transform = 'scale(1.1)';
-  setTimeout(() => timerFields.minutes.style.transform = 'scale(1)', 100);
-  timerFields.hours.style.transform = 'scale(1.1)';
-  setTimeout(() => timerFields.hours.style.transform = 'scale(1)', 100);
-  timerFields.days.style.transform = 'scale(1.1)';
-  setTimeout(() => timerFields.days.style.transform = 'scale(1)', 100);
+  
+  previousTime = { days: d, hours: h, minutes: m, seconds: s };
 
+}
+ //deneme amaçlı küçük bir animasyon!!!!
+function handleAnimation(element, newValue, oldValue) {
+  if (newValue !== oldValue) {
+    element.style.transition = 'transform 0.1s ease'; 
+    element.style.transform = 'scale(1.1)';
+    
+    setTimeout(() => {
+      element.style.transform = 'scale(1)';
+    }, 100);
+  }
 }
 
 function convertMs(ms) {
